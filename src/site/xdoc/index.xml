@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Module appointment rest</title>
+    </properties>
+    <body>
+        <section name="Module appointment rest ">
+         
+            <subsection name="Description">
+                <p>This module exposes a REST API for retrieving available time slots and calendar geolocation</p>
+            </subsection>
+           
+        </section>
+    </body>
+</document>

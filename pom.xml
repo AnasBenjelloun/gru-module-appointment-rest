@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>fr.paris.lutece.tools</groupId>
+    <artifactId>lutece-global-pom</artifactId>
+    <version>5.1.2</version>
+  </parent>
+  <groupId>fr.paris.lutece.plugins</groupId>
+  <artifactId>module-appointment-rest</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>lutece-plugin</packaging>
+  <name>Lutece appointment rest module</name>
+  <scm>
+    <connection>scm:git:https://github.com/lutece-secteur-public/gru-module-appointment-rest.git</connection>
+    <developerConnection>scm:git:https://github.com/lutece-secteur-public/gru-module-appointment-rest.git</developerConnection>
+    <url>https://github.com/lutece-secteur-public/gru-module-appointment-rest.git</url>
+    <tag>HEAD</tag>
+  </scm>
+  <properties>
+    <jiraComponentId />
+    <jiraProjectName>APPOINTMENTREST</jiraProjectName>
+    <componentName>appointment-rest</componentName>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>fr.paris.lutece</groupId>
+      <artifactId>lutece-core</artifactId>
+      <version>7.0.8</version>
+      <type>lutece-core</type>
+    </dependency>
+    <dependency>
+      <groupId>fr.paris.lutece.plugins</groupId>
+      <artifactId>plugin-appointment</artifactId>
+      <version>3.0.10-SNAPSHOT</version>
+      <type>lutece-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>fr.paris.lutece.plugins</groupId>
+      <artifactId>plugin-rest</artifactId>
+      <version>3.3.0</version>
+      <type>lutece-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>fr.paris.lutece.plugins</groupId>
+      <artifactId>library-httpaccess</artifactId>
+      <version>3.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.xml.ws</groupId>
+      <artifactId>jakarta.xml.ws-api</artifactId>
+      <version>2.3.3</version>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>lutece</id>
+      <name>luteceRepository</name>
+      <url>http://dev.lutece.paris.fr/maven_repository</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
+</project>
