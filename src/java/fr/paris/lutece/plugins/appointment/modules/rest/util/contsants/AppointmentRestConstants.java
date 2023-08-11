@@ -30,6 +30,8 @@ public class AppointmentRestConstants {
     public static final String SOLR_QUERY_TO = " TO ";
     public static final String SOLR_QUERY_LB = "[";
     public static final String SOLR_QUERY_RB = "]";
+    public static final String SOLR_QUERY_RP = ")";
+    public static final String SOLR_QUERY_LP = "(";
 
 
 

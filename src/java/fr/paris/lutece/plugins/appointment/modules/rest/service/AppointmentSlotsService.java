@@ -9,6 +9,7 @@ import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotsSea
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.InfoSlot;
 import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +56,7 @@ public class AppointmentSlotsService {
 
         Map<String, List<InfoSlot>> availableTimeSlots = solrResponse.stream().collect(
                 Collectors.groupingBy(
-                        a -> a.getUidFormString(),
+                        a -> StringUtils.substringBetween(a.getUidFormString(), "_", "_"),
                         Collectors.mapping(
                                 a -> new InfoSlot(LocalDateTime.parse(a.getDate(), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER), a.getUrl()),
                                 Collectors.toList())
