@@ -11,7 +11,7 @@ public class AppointmentRestConstants {
 
     /** The Constant PATH_AVAILABLE_SLOTS. */
     public static final String PATH_AVAILABLE_SLOTS = "availableTimeSlots";
-    public static final String PATH_AVAILABLE_SLOT = "availableTimeSlot";
+    public static final String PATH_MANAGED_MEETING_POINTS = "getManagedMeetingPoints";
 
     public static final String JSON_TAG_MEETING_POINT_IDS = "meeting_point_ids";
     public static final String JSON_TAG_START_DATE = "start_date";
@@ -25,6 +25,8 @@ public class AppointmentRestConstants {
     public static final String SOLR_QUERY_FIELD = "&fl=";
     public static final String SOLR_QUERY_FILTER_QUERY = "&fq=";
     public static final String SOLR_QUERY_FILTER_ROWS = "&rows=";
+    public static final String SOLR_QUERY_GROUP = "&group=true";
+    public static final String SOLR_QUERY_GROUP_FIELD = "&group.field=";
     public static final String SOLR_QUERY_COMMA = ",";
     public static final String SOLR_QUERY_COLON = ":";
     public static final String SOLR_QUERY_TO = " TO ";

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.IAppointmentDataProvider;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.SolrProvider;
-import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotSolrPOJO;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrAppointmentSlotPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotsSearchPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.InfoSlot;
 import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
@@ -51,10 +51,10 @@ public class AppointmentSlotsService {
         String response =  _dataProvider.getAvailableTimeSlot( search.getAppointmentIds(), search.getStartDate(), search.getEndDate() );
 
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<AppointmentSlotSolrPOJO>> typeReference = new TypeReference<List<AppointmentSlotSolrPOJO>>() {};
-        List<AppointmentSlotSolrPOJO> solrResponse = mapper.readValue(response, typeReference);
+        TypeReference<List<SolrAppointmentSlotPOJO>> typeReference = new TypeReference<List<SolrAppointmentSlotPOJO>>() {};
+        List<SolrAppointmentSlotPOJO> solrResponse = mapper.readValue(response, typeReference);
 
-        Map<String, List<InfoSlot>> availableTimeSlots = solrResponse.stream().collect(
+        return solrResponse.stream().collect(
                 Collectors.groupingBy(
                         a -> StringUtils.substringBetween(a.getUidFormString(), "_", "_"),
                         Collectors.mapping(
@@ -62,8 +62,6 @@ public class AppointmentSlotsService {
                                 Collectors.toList())
                 )
         );
-
-        return availableTimeSlots;
     }
 
 }

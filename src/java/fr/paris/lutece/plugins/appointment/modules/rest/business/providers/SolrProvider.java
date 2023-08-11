@@ -2,7 +2,8 @@ package fr.paris.lutece.plugins.appointment.modules.rest.business.providers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotSolrPOJO;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrAppointmentSlotPOJO;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrMeetingPointPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -57,7 +58,7 @@ public class SolrProvider implements IAppointmentDataProvider {
     public String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate) throws Exception {
         HttpAccess httpAccess = new HttpAccess( );
 
-        StringBuilder query = generateSolarQuery(appointmentIds, startDate, endDate);
+        StringBuilder query = generateAvailableTimeSlotSolrQuery(appointmentIds, startDate, endDate);
 
         String strUrl = _strBaseUrl + query;
 
@@ -67,16 +68,16 @@ public class SolrProvider implements IAppointmentDataProvider {
         return jsonNode.get("response").get("docs").toString();
     }
 
-    private static StringBuilder generateSolarQuery(List<String> appointmentIds, LocalDate startDate, LocalDate endDate) {
+    private static StringBuilder generateAvailableTimeSlotSolrQuery(List<String> appointmentIds, LocalDate startDate, LocalDate endDate) {
         StringBuilder query = new StringBuilder();
         query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
         query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
-        query.append(encoder(AppointmentSlotSolrPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + AppointmentSlotSolrPOJO.SOLR_FIELD_DATE + AppointmentRestConstants.SOLR_QUERY_COMMA + AppointmentSlotSolrPOJO.SOLR_FIELD_URL));
+        query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrAppointmentSlotPOJO.SOLR_FIELD_DATE + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrAppointmentSlotPOJO.SOLR_FIELD_URL));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
-        query.append(AppointmentSlotSolrPOJO.SOLR_FIELD_DATE).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON));
+        query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_DATE).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON));
         query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(startDate.atStartOfDay().format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(LocalTime.MAX.atDate(endDate).format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
-        query.append(AppointmentSlotSolrPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
+        query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
         query.append(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE)));
         query.append(AppointmentRestConstants.SOLR_QUERY_RP);
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_ROWS + 10000);
@@ -85,7 +86,23 @@ public class SolrProvider implements IAppointmentDataProvider {
 
     @Override
     public String getManagedMeetingPoints() throws Exception {
-        return null;
+        HttpAccess httpAccess = new HttpAccess( );
+
+        StringBuilder query = generateManagedMeetingPoints();
+
+        String strUrl = _strBaseUrl + query;
+
+        return httpAccess.doGet( strUrl );
+    }
+
+    private static StringBuilder generateManagedMeetingPoints() {
+        StringBuilder query = new StringBuilder();
+        query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
+        query.append(encoder(SolrMeetingPointPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_ADDRESS + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_GEOLOC));
+        query.append(AppointmentRestConstants.SOLR_QUERY_GROUP);
+        query.append(AppointmentRestConstants.SOLR_QUERY_GROUP_FIELD + SolrMeetingPointPOJO.SOLR_FIELD_UID);
+        return query;
     }
 
     public static String getUIDfromID( String strID )

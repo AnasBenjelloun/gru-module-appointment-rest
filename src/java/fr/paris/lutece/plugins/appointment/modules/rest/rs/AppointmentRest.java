@@ -2,6 +2,7 @@ package fr.paris.lutece.plugins.appointment.modules.rest.rs;
 
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotsSearchPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.InfoSlot;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.MeetingPointPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.service.AppointmentRestService;
 import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
 import fr.paris.lutece.plugins.appointment.service.AppointmentPlugin;
@@ -36,5 +37,15 @@ public class AppointmentRest {
                 reason, Optional.ofNullable(documentsNumber).map(Integer::valueOf).orElse(null));
         Map<String, List<InfoSlot>> availableTimeSlots = AppointmentRestService.getInstance().getAvailableTimeSlots(search);
         return availableTimeSlots;
+    }
+
+    @GET
+    @Path( AppointmentRestConstants.SLASH + AppointmentRestConstants.PATH_API + AppointmentRestConstants.SLASH + AppointmentRestConstants.PATH_MANAGED_MEETING_POINTS)
+    @Produces( MediaType.APPLICATION_JSON )
+    public List<MeetingPointPOJO> getManagedMeetingPoints( ) throws Exception {
+
+
+        List<MeetingPointPOJO> managedMeetingPoints = AppointmentRestService.getInstance().getManagedMeetingPoints();
+        return managedMeetingPoints;
     }
 }

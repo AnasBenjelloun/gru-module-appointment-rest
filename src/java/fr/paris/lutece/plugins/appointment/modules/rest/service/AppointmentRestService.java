@@ -2,6 +2,7 @@ package fr.paris.lutece.plugins.appointment.modules.rest.service;
 
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.AppointmentSlotsSearchPOJO;
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.InfoSlot;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.MeetingPointPOJO;
 
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,13 @@ public class AppointmentRestService implements IAppointmentRestService {
     public Map<String, List<InfoSlot>> getAvailableTimeSlots(AppointmentSlotsSearchPOJO search) throws Exception {
         AppointmentSlotsService _appointmentSlotsService = AppointmentSlotsService.getInstance();
 
-        Map<String, List<InfoSlot>> listeAvailableTimeSlots = _appointmentSlotsService.getAvailableTimeSlotsAsList(search);
+        return _appointmentSlotsService.getAvailableTimeSlotsAsList(search);
+    }
 
-        return listeAvailableTimeSlots;
+    @Override
+    public List<MeetingPointPOJO> getManagedMeetingPoints() throws Exception {
+        AppointmentMeetingPointsService _appointmentMeetingPointsService = AppointmentMeetingPointsService.getInstance();
+
+        return _appointmentMeetingPointsService.getManagedMeetingPoints();
     }
 }

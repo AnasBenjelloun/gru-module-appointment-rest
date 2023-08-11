@@ -1,9 +1,6 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.pojo;
 
-import org.apache.james.mime4j.dom.datetime.DateTime;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class AppointmentSlotsSearchPOJO {
