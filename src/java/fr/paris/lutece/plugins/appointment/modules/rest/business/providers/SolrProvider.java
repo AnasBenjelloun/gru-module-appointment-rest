@@ -80,7 +80,7 @@ public class SolrProvider implements IAppointmentDataProvider {
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
         query.append(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE)));
         query.append(AppointmentRestConstants.SOLR_QUERY_RP);
-        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_ROWS + 10000);
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_ROWS + _strRows);
         return query;
     }
 
@@ -99,7 +99,7 @@ public class SolrProvider implements IAppointmentDataProvider {
         StringBuilder query = new StringBuilder();
         query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
         query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
-        query.append(encoder(SolrMeetingPointPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_ADDRESS + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_GEOLOC));
+        query.append(encoder(SolrMeetingPointPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_TITLE + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_ADDRESS + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_GEOLOC));
         query.append(AppointmentRestConstants.SOLR_QUERY_GROUP);
         query.append(AppointmentRestConstants.SOLR_QUERY_GROUP_FIELD + SolrMeetingPointPOJO.SOLR_FIELD_UID);
         return query;

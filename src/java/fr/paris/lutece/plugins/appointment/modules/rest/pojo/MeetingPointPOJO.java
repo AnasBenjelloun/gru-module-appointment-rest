@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE, setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility= JsonAutoDetect.Visibility.NONE)
 public class MeetingPointPOJO {
+
+    public static final String DEFAULT_WEBSITE_URL_RDV = "https://teleservices.paris.fr/rdvtitres/jsp/site/Portal.jsp?page=appointmenttitresearch";
+
     @JsonProperty( "id" )
     private String _strId;
     @JsonProperty( "name" )
@@ -53,7 +56,7 @@ public class MeetingPointPOJO {
     }
 
     public void setName(String strName) {
-        this._strName = _strName;
+        this._strName = strName;
     }
 
     public String getLongitude() {

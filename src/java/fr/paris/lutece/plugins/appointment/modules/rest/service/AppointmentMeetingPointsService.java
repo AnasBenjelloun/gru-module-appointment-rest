@@ -1,28 +1,27 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.IAppointmentDataProvider;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.SolrProvider;
-import fr.paris.lutece.plugins.appointment.modules.rest.pojo.*;
-import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.MeetingPointPOJO;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrMeetingPointPOJO;
+import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrResponseMeetingPointPOJO;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class AppointmentMeetingPointsService {
 
-    private static final String BEAN_SOLR_PROVIDER = "solr.provider";
+    private final static String PROPERTY_WEBSITE_URL = "appointment-rest.website.url";
 
     private static IAppointmentDataProvider _dataProvider;
     private static AppointmentMeetingPointsService _instance;
+    private static String _strWebsiteURL;
     private static final Pattern ZIP_CITY_PATTERN = Pattern.compile("(.*)(\\d{5})\\s+(.+)");
 
 
@@ -47,11 +46,13 @@ public class AppointmentMeetingPointsService {
             _dataProvider = SolrProvider.getInstance();
             AppLogService.info( "DatatProvider loaded : " + _dataProvider.getName( ) );
         }
+
+        _strWebsiteURL = AppPropertiesService.getProperty( PROPERTY_WEBSITE_URL, MeetingPointPOJO.DEFAULT_WEBSITE_URL_RDV );
     }
 
     public List<MeetingPointPOJO> getManagedMeetingPoints( ) throws Exception
     {
-        List<MeetingPointPOJO> manegedPoints = new ArrayList<>();
+        List<MeetingPointPOJO> manegedPoints;
 
         String response =  _dataProvider.getManagedMeetingPoints(  );
 
@@ -87,7 +88,12 @@ public class AppointmentMeetingPointsService {
                 meeting.setPublicAdress(matcher.group(1).trim());
                 meeting.setZipCode(matcher.group(2));
                 meeting.setCityName(matcher.group(3).trim());
+            } else {
+                meeting.setPublicAdress(solrMeeting.getAddressText());
             }
+
+            meeting.setName(solrMeeting.getTitle());
+            meeting.setWebsite(_strWebsiteURL);
             meetingPoints.add(meeting);
         }
 
