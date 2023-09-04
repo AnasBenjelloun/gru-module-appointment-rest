@@ -13,6 +13,13 @@ public class AppointmentRestConstants {
     public static final String PATH_AVAILABLE_SLOTS = "availableTimeSlots";
     public static final String PATH_MANAGED_MEETING_POINTS = "getManagedMeetingPoints";
 
+    public static final String PARAMETER_XPAGE = "page";
+    public static final String XPAGE_APPOINTMENT_ANTS = "appointmentants";
+    public static final String PARAMETER_VIEW = "view";
+    public static final String VIEW_APPOINTMENT_ANTS = "predemandeForm";
+    public static final String PARAMETER_ID_FORM = "id_form";
+    public static final String PARAMETER_STARTING_DATE = "starting_date_time";
+
     public static final String JSON_TAG_MEETING_POINT_IDS = "meeting_point_ids";
     public static final String JSON_TAG_START_DATE = "start_date";
     public static final String JSON_TAG_END_DATE = "end_date";
