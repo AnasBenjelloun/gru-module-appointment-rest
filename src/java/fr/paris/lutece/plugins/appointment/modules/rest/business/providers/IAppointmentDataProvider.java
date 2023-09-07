@@ -22,7 +22,7 @@ public interface IAppointmentDataProvider {
      * @return a JSON string
      * @throws java.lang.Exception
      */
-    String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate ) throws Exception;
+    String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber ) throws Exception;
 
     /**
      * getManagedMeetingPoints

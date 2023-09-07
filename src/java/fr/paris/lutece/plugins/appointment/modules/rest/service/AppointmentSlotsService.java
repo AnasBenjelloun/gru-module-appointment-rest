@@ -57,7 +57,7 @@ public class AppointmentSlotsService {
 
     public Map<String, List<InfoSlot>> getAvailableTimeSlotsAsList(AppointmentSlotsSearchPOJO search) throws Exception
     {
-        String response =  _dataProvider.getAvailableTimeSlot( search.getAppointmentIds(), search.getStartDate(), search.getEndDate() );
+        String response =  _dataProvider.getAvailableTimeSlot( search.getAppointmentIds(), search.getStartDate(), search.getEndDate(), search.getDocumentNumber() );
 
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<List<SolrAppointmentSlotPOJO>> typeReference = new TypeReference<List<SolrAppointmentSlotPOJO>>() {};
@@ -67,13 +67,13 @@ public class AppointmentSlotsService {
                 Collectors.groupingBy(
                         a -> StringUtils.substringBetween(a.getUidFormString(), "_", "_"),
                         Collectors.mapping(
-                                a -> new InfoSlot(LocalDateTime.parse(a.getDate(), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER), buildUrl(a.getUrl())),
+                                a -> new InfoSlot(LocalDateTime.parse(a.getDate(), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER), buildUrl(a.getUrl(), search)),
                                 Collectors.toList())
                 )
         );
     }
 
-    public String buildUrl(String strUrl) {
+    public String buildUrl(String strUrl, AppointmentSlotsSearchPOJO search) {
         List<NameValuePair> params;
         try {
             params = URLEncodedUtils.parse(new URI(strUrl), Charset.forName("UTF-8"));
@@ -88,6 +88,7 @@ public class AppointmentSlotsService {
         url.addParameter( AppointmentRestConstants.PARAMETER_VIEW, AppointmentRestConstants.VIEW_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_ID_FORM, mapParamaters.get(AppointmentRestConstants.PARAMETER_ID_FORM) );
         url.addParameter( AppointmentRestConstants.PARAMETER_STARTING_DATE, mapParamaters.get(AppointmentRestConstants.PARAMETER_STARTING_DATE) );
+        url.addParameter( AppointmentRestConstants.PARAMETER_NB_PLACE_TO_TAKE, search.getDocumentNumber( ) );
         return url.getUrl( );
 
     }

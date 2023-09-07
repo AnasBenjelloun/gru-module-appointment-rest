@@ -55,10 +55,10 @@ public class SolrProvider implements IAppointmentDataProvider {
     }
 
     @Override
-    public String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate) throws Exception {
+    public String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber) throws Exception {
         HttpAccess httpAccess = new HttpAccess( );
 
-        StringBuilder query = generateAvailableTimeSlotSolrQuery(appointmentIds, startDate, endDate);
+        StringBuilder query = generateAvailableTimeSlotSolrQuery(appointmentIds, startDate, endDate, documentNumber);
 
         String strUrl = _strBaseUrl + query;
 
@@ -68,7 +68,7 @@ public class SolrProvider implements IAppointmentDataProvider {
         return jsonNode.get("response").get("docs").toString();
     }
 
-    private static StringBuilder generateAvailableTimeSlotSolrQuery(List<String> appointmentIds, LocalDate startDate, LocalDate endDate) {
+    private static StringBuilder generateAvailableTimeSlotSolrQuery(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber) {
         StringBuilder query = new StringBuilder();
         query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
         query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
@@ -80,6 +80,18 @@ public class SolrProvider implements IAppointmentDataProvider {
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
         query.append(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE)));
         query.append(AppointmentRestConstants.SOLR_QUERY_RP);
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_DAY_OPEN + AppointmentRestConstants.SOLR_QUERY_COLON + AppointmentRestConstants.SOLR_QUERY_TRUE));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_ENABLED + AppointmentRestConstants.SOLR_QUERY_COLON + AppointmentRestConstants.SOLR_QUERY_TRUE));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_APPOINTMENT_ACTIVE + AppointmentRestConstants.SOLR_QUERY_COLON + AppointmentRestConstants.SOLR_QUERY_TRUE));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_NB_CONSECUTIVES_SLOTS).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON));
+        query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(documentNumber).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(AppointmentRestConstants.SOLR_QUERY_STAR).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_MAX_CONSECUTIVES_SLOTS).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON));
+        query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(documentNumber).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(AppointmentRestConstants.SOLR_QUERY_STAR).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_ROWS + _strRows);
         return query;
     }
