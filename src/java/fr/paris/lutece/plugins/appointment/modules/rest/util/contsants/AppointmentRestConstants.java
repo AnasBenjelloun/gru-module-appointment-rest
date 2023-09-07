@@ -19,7 +19,7 @@ public class AppointmentRestConstants {
     public static final String VIEW_APPOINTMENT_ANTS = "predemandeForm";
     public static final String PARAMETER_ID_FORM = "id_form";
     public static final String PARAMETER_STARTING_DATE = "starting_date_time";
-    public static final String PARAMETER_NB_PLACE_TO_TAKE = "nbPlaceToTake";
+    public static final String PARAMETER_NB_PLACES_TO_TAKE = "nbPlacesToTake";
 
     public static final String JSON_TAG_MEETING_POINT_IDS = "meeting_point_ids";
     public static final String JSON_TAG_START_DATE = "start_date";

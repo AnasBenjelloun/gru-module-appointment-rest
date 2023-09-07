@@ -88,7 +88,7 @@ public class AppointmentSlotsService {
         url.addParameter( AppointmentRestConstants.PARAMETER_VIEW, AppointmentRestConstants.VIEW_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_ID_FORM, mapParamaters.get(AppointmentRestConstants.PARAMETER_ID_FORM) );
         url.addParameter( AppointmentRestConstants.PARAMETER_STARTING_DATE, mapParamaters.get(AppointmentRestConstants.PARAMETER_STARTING_DATE) );
-        url.addParameter( AppointmentRestConstants.PARAMETER_NB_PLACE_TO_TAKE, search.getDocumentNumber( ) );
+        url.addParameter( AppointmentRestConstants.PARAMETER_NB_PLACES_TO_TAKE, search.getDocumentNumber( ) );
         return url.getUrl( );
 
     }
