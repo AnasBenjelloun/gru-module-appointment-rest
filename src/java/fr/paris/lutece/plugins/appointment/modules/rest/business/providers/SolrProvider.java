@@ -80,7 +80,7 @@ public class SolrProvider implements IAppointmentDataProvider {
         query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(startDate.atStartOfDay().format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(LocalTime.MAX.atDate(endDate).format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
-        query.append(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE)));
+        query.append(encoder(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE))));
         query.append(AppointmentRestConstants.SOLR_QUERY_RP);
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_DAY_OPEN + AppointmentRestConstants.SOLR_QUERY_COLON + AppointmentRestConstants.SOLR_QUERY_TRUE));
