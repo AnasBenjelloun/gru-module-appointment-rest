@@ -1,5 +1,8 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.business.providers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.paris.lutece.util.httpaccess.HttpAccessException;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public interface IAppointmentDataProvider {
      * @return a JSON string
      * @throws java.lang.Exception
      */
-    String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber ) throws Exception;
+    String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber ) throws HttpAccessException, JsonProcessingException;
 
     /**
      * getManagedMeetingPoints
@@ -31,6 +34,6 @@ public interface IAppointmentDataProvider {
      * @return a JSON string
      * @throws java.lang.Exception
      */
-    String getManagedMeetingPoints( ) throws Exception;
+    String getManagedMeetingPoints( ) throws HttpAccessException;
 
 }

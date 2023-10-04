@@ -1,5 +1,6 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.IAppointmentDataProvider;
@@ -10,6 +11,7 @@ import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrAppointmentSlot
 import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.AppointmentRestConstants;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.url.UrlItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.core5.http.NameValuePair;
@@ -55,8 +57,7 @@ public class AppointmentSlotsService {
         }
     }
 
-    public Map<String, List<InfoSlot>> getAvailableTimeSlotsAsList(AppointmentSlotsSearchPOJO search) throws Exception
-    {
+    public Map<String, List<InfoSlot>> getAvailableTimeSlotsAsList(AppointmentSlotsSearchPOJO search) throws HttpAccessException, JsonProcessingException {
         String response =  _dataProvider.getAvailableTimeSlot( search.getAppointmentIds(), search.getStartDate(), search.getEndDate(), search.getDocumentNumber() );
 
         ObjectMapper mapper = new ObjectMapper();

@@ -1,5 +1,6 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.IAppointmentDataProvider;
 import fr.paris.lutece.plugins.appointment.modules.rest.business.providers.SolrProvider;
@@ -8,6 +9,7 @@ import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrMeetingPointPOJ
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrResponseMeetingPointPOJO;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -50,8 +52,7 @@ public class AppointmentMeetingPointsService {
         _strWebsiteURL = AppPropertiesService.getProperty( PROPERTY_WEBSITE_URL, MeetingPointPOJO.DEFAULT_WEBSITE_URL_RDV );
     }
 
-    public List<MeetingPointPOJO> getManagedMeetingPoints( ) throws Exception
-    {
+    public List<MeetingPointPOJO> getManagedMeetingPoints( ) throws HttpAccessException, JsonProcessingException {
         List<MeetingPointPOJO> manegedPoints;
 
         String response =  _dataProvider.getManagedMeetingPoints(  );

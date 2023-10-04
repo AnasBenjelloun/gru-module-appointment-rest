@@ -1,5 +1,6 @@
 package fr.paris.lutece.plugins.appointment.modules.rest.business.providers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrAppointmentSlotPOJO;
@@ -8,6 +9,7 @@ import fr.paris.lutece.plugins.appointment.modules.rest.util.contsants.Appointme
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
+import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -55,7 +57,7 @@ public class SolrProvider implements IAppointmentDataProvider {
     }
 
     @Override
-    public String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber) throws Exception {
+    public String getAvailableTimeSlot(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber) throws HttpAccessException, JsonProcessingException {
         HttpAccess httpAccess = new HttpAccess( );
 
         StringBuilder query = generateAvailableTimeSlotSolrQuery(appointmentIds, startDate, endDate, documentNumber);
@@ -97,7 +99,7 @@ public class SolrProvider implements IAppointmentDataProvider {
     }
 
     @Override
-    public String getManagedMeetingPoints() throws Exception {
+    public String getManagedMeetingPoints() throws HttpAccessException {
         HttpAccess httpAccess = new HttpAccess( );
 
         StringBuilder query = generateManagedMeetingPoints();
