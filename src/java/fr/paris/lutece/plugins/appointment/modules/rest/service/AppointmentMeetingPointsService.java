@@ -83,14 +83,15 @@ public class AppointmentMeetingPointsService {
                 meeting.setLatitude(geoloc[0].trim());
                 meeting.setLongitude(geoloc[1].trim());
             }
-
-            Matcher matcher = ZIP_CITY_PATTERN.matcher(solrMeeting.getAddressText());
-            if (matcher.find()) {
-                meeting.setPublicAdress(matcher.group(1).trim());
-                meeting.setZipCode(matcher.group(2));
-                meeting.setCityName(matcher.group(3).trim());
-            } else {
-                meeting.setPublicAdress(solrMeeting.getAddressText());
+            if(solrMeeting.getAddressText() != null) {
+                Matcher matcher = ZIP_CITY_PATTERN.matcher(solrMeeting.getAddressText());
+                if (matcher.find()) {
+                    meeting.setPublicAdress(matcher.group(1).trim());
+                    meeting.setZipCode(matcher.group(2));
+                    meeting.setCityName(matcher.group(3).trim());
+                } else {
+                    meeting.setPublicAdress(solrMeeting.getAddressText());
+                }
             }
 
             meeting.setName(solrMeeting.getTitle());
