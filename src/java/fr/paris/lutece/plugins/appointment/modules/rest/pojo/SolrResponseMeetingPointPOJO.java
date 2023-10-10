@@ -21,7 +21,7 @@ public class SolrResponseMeetingPointPOJO {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Grouped {
 
-        @JsonProperty("uid_form_string")
+        @JsonProperty("uid")
         private GroupedByUidForm groupedByUidForm;
 
         public GroupedByUidForm getGroupedByUidForm() {

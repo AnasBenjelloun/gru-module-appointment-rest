@@ -80,7 +80,7 @@ public class SolrProvider implements IAppointmentDataProvider {
         query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(startDate.atStartOfDay().format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(LocalTime.MAX.atDate(endDate).format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
-        query.append(encoder(appointmentIds.stream().map(SolrProvider::getUIDfromID).collect(Collectors.joining(StringUtils.SPACE))));
+        query.append(encoder(appointmentIds.stream().collect(Collectors.joining(StringUtils.SPACE))));
         query.append(AppointmentRestConstants.SOLR_QUERY_RP);
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_DAY_OPEN + AppointmentRestConstants.SOLR_QUERY_COLON + AppointmentRestConstants.SOLR_QUERY_TRUE));
@@ -114,14 +114,11 @@ public class SolrProvider implements IAppointmentDataProvider {
         query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
         query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
         query.append(encoder(SolrMeetingPointPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_TITLE + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_ADDRESS + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrMeetingPointPOJO.SOLR_FIELD_GEOLOC));
+        query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
+        query.append(SolrMeetingPointPOJO.SOLR_FIELD_TYPE).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(SolrMeetingPointPOJO.SOLR_FIELD_TYPE_APPOINTMENT);
         query.append(AppointmentRestConstants.SOLR_QUERY_GROUP);
         query.append(AppointmentRestConstants.SOLR_QUERY_GROUP_FIELD + SolrMeetingPointPOJO.SOLR_FIELD_UID);
         return query;
-    }
-
-    public static String getUIDfromID( String strID )
-    {
-        return "Lutece_" + strID + "_appointment";
     }
 
 

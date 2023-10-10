@@ -10,7 +10,6 @@ import fr.paris.lutece.plugins.appointment.modules.rest.pojo.SolrResponseMeeting
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +76,7 @@ public class AppointmentMeetingPointsService {
 
         for (SolrMeetingPointPOJO solrMeeting : solrMeetings) {
             MeetingPointPOJO meeting = new MeetingPointPOJO();
-            meeting.setId(StringUtils.substringBetween(solrMeeting.getUidFormString(), "_", "_"));
+            meeting.setId(solrMeeting.getUid());
             if (solrMeeting.getGeoloc() != null && solrMeeting.getGeoloc().contains(",")) {
                 String[] geoloc = solrMeeting.getGeoloc().split(",");
                 meeting.setLatitude(geoloc[0].trim());

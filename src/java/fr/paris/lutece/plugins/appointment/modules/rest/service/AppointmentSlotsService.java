@@ -66,7 +66,7 @@ public class AppointmentSlotsService {
 
         return solrResponse.stream().collect(
                 Collectors.groupingBy(
-                        a -> StringUtils.substringBetween(a.getUidFormString(), "_", "_"),
+                        a -> a.getUidFormString(),
                         Collectors.mapping(
                                 a -> new InfoSlot(LocalDateTime.parse(a.getDate(), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER), buildUrl(a.getUrl(), search)),
                                 Collectors.toList())

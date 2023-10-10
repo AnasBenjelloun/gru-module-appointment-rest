@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SolrMeetingPointPOJO {
-    public final static String SOLR_FIELD_UID = "uid_form_string";
+    public final static String SOLR_FIELD_UID = "uid";
     public final static String SOLR_FIELD_TITLE = "title";
-    public final static String SOLR_FIELD_ADDRESS = "appointmentslot_address_text";
-    public final static String SOLR_FIELD_GEOLOC = "appointmentslot_geoloc";
+    public final static String SOLR_FIELD_ADDRESS = "appointment_address_text";
+    public final static String SOLR_FIELD_GEOLOC = "appointment_geoloc";
+    public static final String SOLR_FIELD_TYPE = "type";
+    public static final String SOLR_FIELD_TYPE_APPOINTMENT = "appointment";
 
     @JsonProperty(SOLR_FIELD_UID)
-    String _strUidFormString;
+    String _strUid;
     @JsonProperty(SOLR_FIELD_TITLE)
     String _strTitle;
     @JsonProperty(SOLR_FIELD_ADDRESS)
@@ -19,12 +21,12 @@ public class SolrMeetingPointPOJO {
     @JsonProperty(SOLR_FIELD_GEOLOC)
     String _strGeoloc;
 
-    public String getUidFormString() {
-        return _strUidFormString;
+    public String getUid() {
+        return _strUid;
     }
 
-    public void setUidFormString(String strUidFormString) {
-        this._strUidFormString = strUidFormString;
+    public void setUid(String strUid) {
+        this._strUid = strUid;
     }
 
     public String getTitle() {
