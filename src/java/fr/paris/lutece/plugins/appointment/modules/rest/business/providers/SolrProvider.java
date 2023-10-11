@@ -62,6 +62,8 @@ public class SolrProvider implements IAppointmentDataProvider {
 
         StringBuilder query = generateAvailableTimeSlotSolrQuery(appointmentIds, startDate, endDate, documentNumber);
 
+        AppLogService.debug("Solr query getAvailableTimeSlot : {}", query);
+
         String strUrl = _strBaseUrl + query;
 
         String response = httpAccess.doGet( strUrl );
@@ -103,6 +105,8 @@ public class SolrProvider implements IAppointmentDataProvider {
         HttpAccess httpAccess = new HttpAccess( );
 
         StringBuilder query = generateManagedMeetingPoints();
+
+        AppLogService.debug("Solr query getManagedMeetingPoints : {}", query);
 
         String strUrl = _strBaseUrl + query;
 
