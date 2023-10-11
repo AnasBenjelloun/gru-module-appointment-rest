@@ -84,8 +84,7 @@ public class AppointmentSlotsService {
         Map<String, String> mapParamaters = params.stream().collect(
                 Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 
-        UrlItem url = new UrlItem( _baseUrl );
-        url.addParameter( AppointmentRestConstants.PARAMETER_XPAGE, AppointmentRestConstants.XPAGE_APPOINTMENT_ANTS );
+        UrlItem url = new UrlItem( _baseUrl + AppointmentRestConstants.XPAGE_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_VIEW, AppointmentRestConstants.VIEW_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_ID_FORM, mapParamaters.get(AppointmentRestConstants.PARAMETER_ID_FORM) );
         url.addParameter( AppointmentRestConstants.PARAMETER_STARTING_DATE, mapParamaters.get(AppointmentRestConstants.PARAMETER_STARTING_DATE) );
