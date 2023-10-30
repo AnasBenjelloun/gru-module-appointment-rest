@@ -71,13 +71,20 @@ public class SolrProvider implements IAppointmentDataProvider {
     }
 
     private static StringBuilder generateAvailableTimeSlotSolrQuery(List<String> appointmentIds, LocalDate startDate, LocalDate endDate, Integer documentNumber) {
+        String strStartDate = startDate.atStartOfDay().format(AppointmentRestConstants.SOLR_DATE_FORMATTER);
+
+        if(LocalDate.now().isEqual(startDate))
+        {
+            strStartDate = AppointmentRestConstants.SOLR_QUERY_NOW;
+        }
+
         StringBuilder query = new StringBuilder();
         query.append(AppointmentRestConstants.SOLR_QUERY_SELECT + AppointmentRestConstants.SOLR_QUERY_Q).append(encoder(AppointmentRestConstants.SOLR_QUERY_Q_VALUE));
         query.append(AppointmentRestConstants.SOLR_QUERY_FIELD);
         query.append(encoder(SolrAppointmentSlotPOJO.SOLR_FIELD_UID + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrAppointmentSlotPOJO.SOLR_FIELD_DATE + AppointmentRestConstants.SOLR_QUERY_COMMA + SolrAppointmentSlotPOJO.SOLR_FIELD_URL));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_DATE).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON));
-        query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(AppointmentRestConstants.SOLR_QUERY_NOW).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(LocalTime.MAX.atDate(endDate).format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
+        query.append(encoder(AppointmentRestConstants.SOLR_QUERY_LB)).append(strStartDate).append(encoder(AppointmentRestConstants.SOLR_QUERY_TO)).append(LocalTime.MAX.atDate(endDate).format(AppointmentRestConstants.SOLR_DATE_FORMATTER)).append(encoder(AppointmentRestConstants.SOLR_QUERY_RB));
         query.append(AppointmentRestConstants.SOLR_QUERY_FILTER_QUERY);
         query.append(SolrAppointmentSlotPOJO.SOLR_FIELD_UID).append(encoder(AppointmentRestConstants.SOLR_QUERY_COLON)).append(AppointmentRestConstants.SOLR_QUERY_LP);
         query.append(encoder(appointmentIds.stream().collect(Collectors.joining(StringUtils.SPACE))));
