@@ -44,7 +44,7 @@ public class AppointmentRestConstants {
     public static final String SOLR_QUERY_LP = "(";
     public static final String SOLR_QUERY_STAR = "*";
     public static final String SOLR_QUERY_TRUE = "true";
-
+    public static final String SOLR_QUERY_NOW = "NOW";
 
 
     public static final DateTimeFormatter SEARCH_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
