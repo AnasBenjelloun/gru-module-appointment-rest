@@ -13,13 +13,12 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
 import fr.paris.lutece.util.url.UrlItem;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.net.URLEncodedUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -66,31 +65,39 @@ public class AppointmentSlotsService {
 
         return solrResponse.stream().collect(
                 Collectors.groupingBy(
-                        a -> a.getUidFormString(),
+                        SolrAppointmentSlotPOJO::getUidFormString,
                         Collectors.mapping(
-                                a -> new InfoSlot(LocalDateTime.parse(a.getDate(), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER), buildUrl(a.getUrl(), search)),
+                                a -> new InfoSlot(buildDate(a.getUrl()), buildUrl(a.getUrl(), search.getDocumentNumber())),
                                 Collectors.toList())
                 )
         );
     }
 
-    public String buildUrl(String strUrl, AppointmentSlotsSearchPOJO search) {
-        List<NameValuePair> params;
-        try {
-            params = URLEncodedUtils.parse(new URI(strUrl), Charset.forName("UTF-8"));
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        Map<String, String> mapParamaters = params.stream().collect(
-                Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
+    private static LocalDateTime buildDate(String strUrl) {
+        return LocalDateTime.parse(getParamFromUrl(strUrl).get(AppointmentRestConstants.PARAMETER_STARTING_DATE), AppointmentRestConstants.SOLR_RESPONSE_DATE_FORMATTER);
+    }
+
+    public String buildUrl(String strUrl, Integer nbPlaceToTake) {
+        Map<String, String> mapParamaters = getParamFromUrl(strUrl);
 
         UrlItem url = new UrlItem( _baseUrl + AppointmentRestConstants.XPAGE_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_VIEW, AppointmentRestConstants.VIEW_APPOINTMENT_ANTS );
         url.addParameter( AppointmentRestConstants.PARAMETER_ID_FORM, mapParamaters.get(AppointmentRestConstants.PARAMETER_ID_FORM) );
         url.addParameter( AppointmentRestConstants.PARAMETER_STARTING_DATE, mapParamaters.get(AppointmentRestConstants.PARAMETER_STARTING_DATE) );
-        url.addParameter( AppointmentRestConstants.PARAMETER_NB_PLACES_TO_TAKE, search.getDocumentNumber( ) );
+        url.addParameter( AppointmentRestConstants.PARAMETER_NB_PLACES_TO_TAKE, nbPlaceToTake );
         return url.getUrl( );
+    }
 
+    private static Map<String, String> getParamFromUrl(String strUrl) {
+        List<NameValuePair> params;
+        try {
+
+            params = URLEncodedUtils.parse(new URI(strUrl), StandardCharsets.UTF_8);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        return params.stream().collect(
+                Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
 
 }

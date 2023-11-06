@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.ANY, getterVisibility=JsonAutoDetect.Visibility.NONE, setterVisibility=JsonAutoDetect.Visibility.NONE, creatorVisibility= JsonAutoDetect.Visibility.NONE)
 public class InfoSlot {
     @JsonProperty( "datetime" )
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm'Z'")
     private LocalDateTime _dateTime;
     @JsonProperty( "callback_url" )
     private String _strCallbackUrl;
