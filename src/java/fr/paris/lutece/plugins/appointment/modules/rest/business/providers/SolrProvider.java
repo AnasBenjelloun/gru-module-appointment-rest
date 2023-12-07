@@ -43,6 +43,7 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.httpaccess.HttpAccess;
 import fr.paris.lutece.util.httpaccess.HttpAccessException;
+import fr.paris.lutece.util.signrequest.BasicAuthorizationAuthenticator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -61,10 +62,14 @@ public class SolrProvider implements IAppointmentDataProvider
     private static final String DEFAULT_URI_ENCODING = "ISO-8859-1";
     private static final String PROPERTY_SOLR_BASE_URL = "appointment-rest.solr.base_url";
     private static final String PROPERTY_SOLR_ROWS = "appointment-rest.solr.rows";
+    private static final String PROPERTY_SOLR_USERNAME = "appointment-rest.solr.username";
+    private static final String PROPERTY_SOLR_PASSWORD = "appointment-rest.solr.password";
 
     private static SolrProvider _instance;
     private static String _strBaseUrl;
     private static String _strRows;
+    private static String _strUserName;
+    private static String _strPassword;
 
     @Override
     public String getName( )
@@ -90,6 +95,8 @@ public class SolrProvider implements IAppointmentDataProvider
             _strBaseUrl = AppPropertiesService.getProperty( PROPERTY_SOLR_BASE_URL );
         }
         _strRows = AppPropertiesService.getProperty( PROPERTY_SOLR_ROWS, "10000" );
+        _strUserName = AppPropertiesService.getProperty( PROPERTY_SOLR_USERNAME );
+        _strPassword = AppPropertiesService.getProperty( PROPERTY_SOLR_PASSWORD );
     }
 
     @Override
@@ -104,7 +111,7 @@ public class SolrProvider implements IAppointmentDataProvider
 
         String strUrl = _strBaseUrl + query;
 
-        String response = httpAccess.doGet( strUrl );
+        String response = httpAccess.doGet( strUrl, new BasicAuthorizationAuthenticator( _strUserName, _strPassword ), null );
         ObjectMapper mapper = new ObjectMapper( );
         JsonNode jsonNode = mapper.readTree( response );
         return jsonNode.get( "response" ).get( "docs" ).toString( );
@@ -168,7 +175,7 @@ public class SolrProvider implements IAppointmentDataProvider
 
         String strUrl = _strBaseUrl + query;
 
-        return httpAccess.doGet( strUrl );
+        return httpAccess.doGet( strUrl, new BasicAuthorizationAuthenticator( _strUserName, _strPassword ), null );
     }
 
     private static StringBuilder generateManagedMeetingPoints( )
