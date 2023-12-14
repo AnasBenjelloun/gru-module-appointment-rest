@@ -68,8 +68,7 @@ public class SolrProvider implements IAppointmentDataProvider
     private static SolrProvider _instance;
     private static String _strBaseUrl;
     private static String _strRows;
-    private static String _strUserName;
-    private static String _strPassword;
+    private static BasicAuthorizationAuthenticator _authenticator;
 
     @Override
     public String getName( )
@@ -95,8 +94,7 @@ public class SolrProvider implements IAppointmentDataProvider
             _strBaseUrl = AppPropertiesService.getProperty( PROPERTY_SOLR_BASE_URL );
         }
         _strRows = AppPropertiesService.getProperty( PROPERTY_SOLR_ROWS, "10000" );
-        _strUserName = AppPropertiesService.getProperty( PROPERTY_SOLR_USERNAME );
-        _strPassword = AppPropertiesService.getProperty( PROPERTY_SOLR_PASSWORD );
+        _authenticator = new BasicAuthorizationAuthenticator( AppPropertiesService.getProperty( PROPERTY_SOLR_USERNAME ), AppPropertiesService.getProperty( PROPERTY_SOLR_PASSWORD ) );
     }
 
     @Override
@@ -111,7 +109,7 @@ public class SolrProvider implements IAppointmentDataProvider
 
         String strUrl = _strBaseUrl + query;
 
-        String response = httpAccess.doGet( strUrl, new BasicAuthorizationAuthenticator( _strUserName, _strPassword ), null );
+        String response = httpAccess.doGet( strUrl, _authenticator, null );
         ObjectMapper mapper = new ObjectMapper( );
         JsonNode jsonNode = mapper.readTree( response );
         return jsonNode.get( "response" ).get( "docs" ).toString( );
@@ -175,7 +173,7 @@ public class SolrProvider implements IAppointmentDataProvider
 
         String strUrl = _strBaseUrl + query;
 
-        return httpAccess.doGet( strUrl, new BasicAuthorizationAuthenticator( _strUserName, _strPassword ), null );
+        return httpAccess.doGet( strUrl, _authenticator, null );
     }
 
     private static StringBuilder generateManagedMeetingPoints( )
